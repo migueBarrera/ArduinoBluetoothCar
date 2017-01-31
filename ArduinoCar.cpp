@@ -16,25 +16,21 @@ ArduinoCar::~ArduinoCar()
 void ArduinoCar::marchaAdelante()
 {
 	motor.setM1Speed(400);
-  delay(1);
 }
 
 void ArduinoCar::marchaAtras()
 {
 	motor.setM1Speed(-400);
-  delay(1);
 }
 
 void ArduinoCar::girarDerecha()
 {
 	motor.setM1Speed(400);
-  delay(1);
 }
 
 void ArduinoCar::girarIzquierda()
 {
 	motor.setM1Speed(-400);
-  delay(1);
 }
 
 void ArduinoCar::parar()
@@ -62,5 +58,3 @@ void ArduinoCar::encenderLucesDelanteras()
 {
 	
 }
-
-

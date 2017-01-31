@@ -3,6 +3,8 @@
 #include <SoftwareSerial.h>
 #define TXD 4
 #define RXD 5
+#define SPEAKER 6
+
 
 SoftwareSerial BTSerial(RXD, TXD); // RX | TX
 ArduinoCar * coche = new ArduinoCar();
@@ -23,23 +25,8 @@ boolean estaAndando = false;
 
 void setup()
 {
-  // iterate over the notes of the melody:
-  for (int thisNote = 0; thisNote < 8; thisNote++) {
 
-    // to calculate the note duration, take one second 
-    // divided by the note type.
-    //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
-    int noteDuration = 1000/noteDurations[thisNote];
-    tone(6, melody[thisNote],noteDuration);
-
-    // to distinguish the notes, set a minimum time between them.
-    // the note's duration + 30% seems to work well:
-    int pauseBetweenNotes = noteDuration * 1.30;
-    delay(pauseBetweenNotes);
-    // stop the tone playing:
-    noTone(6);
-  }
-    
+  tocarMelodiaEncendido();
 	Serial.begin(115200);
 	BTSerial.begin(115200);
 }
@@ -64,7 +51,7 @@ void loop()
 		BTSerial.println();
 	}
 	
-	if ( datosRecibidos != 0 )
+	if ( datosRecibidos != '0' )
 	{   
             switch(datosRecibidos)
             {
@@ -95,3 +82,24 @@ void loop()
   datosRecibidos = 0;
 	
 }
+
+void tocarMelodiaEncendido()
+{
+    // iterate over the notes of the melody:
+  for (int thisNote = 0; thisNote < 8; thisNote++) {
+
+    // to calculate the note duration, take one second 
+    // divided by the note type.
+    //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
+    int noteDuration = 1000/noteDurations[thisNote];
+    tone(6, melody[thisNote],noteDuration);
+
+    // to distinguish the notes, set a minimum time between them.
+    // the note's duration + 30% seems to work well:
+    int pauseBetweenNotes = noteDuration * 1.30;
+    delay(pauseBetweenNotes);
+    // stop the tone playing:
+    noTone(6);
+  }
+}
+
