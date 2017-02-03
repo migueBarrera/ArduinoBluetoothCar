@@ -1,12 +1,11 @@
-#include "ArduinoMotorShieldR3.h"
 #include <Arduino.h>
 
 #ifndef __ARDUINOCAR_H__
 #define __ARDUINOCAR_H__
 class ArduinoCar
 {
+
   private:
-    ArduinoMotorShieldR3 motor;
     ArduinoCar( const ArduinoCar &c );
     ArduinoCar& operator=( const ArduinoCar &c );
     

@@ -1,8 +1,8 @@
 #include "notas.h"
 #include "ArduinoCar.h"
 #include <SoftwareSerial.h>
-#define TXD 4
-#define RXD 5
+#define TXD 2
+#define RXD 3
 #define SPEAKER 6
 
 
@@ -28,7 +28,6 @@ boolean andar = false ,andarPlus = false, giroDr = false , giroIzq = false , int
 void setup()
 {
 
-  tocarMelodiaEncendido();
 	Serial.begin(115200);
 	BTSerial.begin(115200);
 }
@@ -127,7 +126,7 @@ void loop()
     }
 
     //IntermitenteDer
-    if{datosRecibidos == 6 )
+    if(datosRecibidos == 6 )
     {
       coche->encenderIntermitenteDerecho();
     }
