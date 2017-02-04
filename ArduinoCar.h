@@ -20,11 +20,13 @@ class ArduinoCar
       void pararGiro();
   	 	void tocarBocina();
       void pararBocina();
+      void tocarMelodiaEncendido();
   	 	void encenderIntermitenteIzquierdo();
       void apagarIntermitenteIzquierdo();
   	 	void encenderIntermitenteDerecho();
       void apagarIntermitenteDerecho();
   	 	void encenderLucesDelanteras();
+      void encenderLucesDelanterasPlus();
       void apagarLucesDelanteras();
   		void parar();
 }; //ArduinoCar

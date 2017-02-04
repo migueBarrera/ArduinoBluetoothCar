@@ -19,10 +19,12 @@
 #define ARDUINO 106013
 #define ARDUINO_AVR_UNO
 #define ARDUINO_ARCH_AVR
- #include <VM_DBG.h>
 
 //
+void imprimirCadena(byte cadena[]);
+void limpiarCadena(byte cadena[]);
 //
+void tocarMelodiaEncendido();
 
 #include "pins_arduino.h" 
 #include "arduino.h"

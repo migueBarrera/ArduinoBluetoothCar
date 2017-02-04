@@ -1,23 +1,13 @@
 #include "notas.h"
 #include "ArduinoCar.h"
 #include <SoftwareSerial.h>
-#define TXD 2
-#define RXD 3
-#define SPEAKER 6
+#define TXD 8
+#define RXD A0
 
 
 SoftwareSerial BTSerial(RXD, TXD); // RX | TX
 ArduinoCar * coche = new ArduinoCar();
 
-// notes in the melody:
-int melody[] = {
-  NOTE_C4, NOTE_G3,NOTE_G3, NOTE_A3, NOTE_G3,0, NOTE_B3, NOTE_C4};
-
-// note durations: 4 = quarter note, 8 = eighth note, etc.:
-int noteDurations[] = {
-  4, 8, 8, 4,4,4,4,4 };
-
-byte cadenaRecibida[2];
 int contadorCaracteres = 0;
   
 char datosRecibidos = '0';
@@ -27,30 +17,9 @@ boolean andar = false ,andarPlus = false, giroDr = false , giroIzq = false , int
 
 void setup()
 {
-
+  //coche->tocarMelodiaEncendido();
 	Serial.begin(115200);
 	BTSerial.begin(115200);
-}
-
-void imprimirCadena(byte cadena[])
-{
-    int c = 0;
-    while ( cadena[c] != '\0' )
-    {
-      Serial.print(cadena[c]);
-      c++;
-    } 
-    Serial.println();
-}
-
-void limpiarCadena(byte cadena[])
-{
-    int c = 0;
-    while ( cadena[c] != '\0' )
-    {
-      cadena[c] = '\0';
-      c++;
-    } 
 }
 
 void loop()
@@ -69,15 +38,17 @@ void loop()
     //AndarPlus
     if(datosRecibidos == 'p' && andar == false)
     {
-     coche->marchaAdelantePlus();
-      andar = true;
+        coche->marchaAdelantePlus();
+        andar = true;
+        Serial.println("andarPlus");
     }
 
     //Parar
     if(datosRecibidos == 's' && andar == true)
     {
-      coche->parar();
-      andar = false;
+        coche->parar();
+        andar = false;
+        Serial.println("parar");
     }
 
     //MarchaAtras
@@ -85,7 +56,7 @@ void loop()
     {
       coche->marchaAtras();
       andar = true;
-      
+      Serial.println("marchaAtras");
     }
 
     //GiroDerecha
@@ -93,6 +64,7 @@ void loop()
     {
       coche->girarDerecha();
       giroDr = true;
+      Serial.println("dre");
     }
 
     //GiroIzquierda
@@ -100,79 +72,77 @@ void loop()
     {
       coche->girarIzquierda();
       giroIzq = true;
+      Serial.println("izq");
+      
     }
 
     //Parar Giro
     if(giroIzq == true || giroDr == true)
     {
-      if(datosRecibidos = 'k')
+      Serial.println("girando a cualquier lado");
+      if(datosRecibidos == 'k')
       {
+        Serial.println("paro");
         coche->pararGiro();
         giroIzq = false;
         giroDr = false; 
 
-        //Parar intermitente si los hay
-        if(intermitenteIzq == true || intermitenteDr == true)
-        {
           if(intermitenteIzq == true)
           {
+            Serial.println("imnt");
             coche->apagarIntermitenteIzquierdo();
-          }else
+          }
+          if(intermitenteDr == true)
           {
             coche->apagarIntermitenteDerecho();
           }
+          
         }
-      }
     }
 
     //IntermitenteDer
-    if(datosRecibidos == 6 )
+    if(datosRecibidos == '6' )
     {
       coche->encenderIntermitenteDerecho();
+      intermitenteDr = true;
     }
 
     //IntermitenteIzq
-    if(datosRecibidos ==  5)
+    if(datosRecibidos ==  '5')
     {
       coche->encenderIntermitenteIzquierdo();
+      intermitenteIzq = true;
     }
+    
 
     //Encender Luces
-    if(datosRecibidos == 3)
+    if(datosRecibidos == '3')
     {
       coche->encenderLucesDelanteras();
     }
+    //Encender Luces Plus
+    if(datosRecibidos == '7')
+    {
+      coche->encenderLucesDelanterasPlus();
+    }
 
     //Apagar Luces
-    if(datosRecibidos == 4)
+    if(datosRecibidos == '4')
     {
       coche->apagarLucesDelanteras();
     }
-    
+    if(datosRecibidos == '1')
+    {
+        coche->tocarBocina();
+    }
+    if(datosRecibidos == '2')
+    {
+        coche->pararBocina();
+    }
 	}
 
   delay(1);
   datosRecibidos = 0;
 	
-}
-
-void tocarMelodiaEncendido()
-{
-    // iterate over the notes of the melody:
-  for (int thisNote = 0; thisNote < 8; thisNote++) {
-
-    // to calculate the note duration, take one second 
-    // divided by the note type.
-    //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
-    int noteDuration = 1000/noteDurations[thisNote];
-    tone(6, melody[thisNote],noteDuration);
-
-    // to distinguish the notes, set a minimum time between them.
-    // the note's duration + 30% seems to work well:
-    int pauseBetweenNotes = noteDuration * 1.30;
-    delay(pauseBetweenNotes);
-    // stop the tone playing:
-    noTone(6);
-  }
 }
 
